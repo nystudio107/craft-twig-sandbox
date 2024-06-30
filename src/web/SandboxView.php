@@ -4,7 +4,7 @@ namespace nystudio107\crafttwigsandbox\web;
 
 use craft\web\twig\Environment;
 use craft\web\View;
-use nystudio107\crafttwigsandbox\twig\AllowedSecurityPolicy;
+use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicyInterface;
 
@@ -38,7 +38,7 @@ class SandboxView extends View
         // Use the passed in ErrorHandler, or create a default error handler
         $this->sandboxErrorHandler = $this->sandboxErrorHandler ?? new SandboxErrorHandler();
         // Use the passed in SecurityPolicy, or create a default security policy
-        $this->securityPolicy = $this->securityPolicy ?? new AllowedSecurityPolicy();
+        $this->securityPolicy = $this->securityPolicy ?? new WhitelistSecurityPolicy();
     }
 
     /**

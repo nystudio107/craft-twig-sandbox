@@ -6,7 +6,7 @@ use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
 use Twig\Sandbox\SecurityNotAllowedTagError;
 
-class AllowedSecurityPolicy extends BaseSecurityPolicy
+class WhitelistSecurityPolicy extends BaseSecurityPolicy
 {
     // Public Methods
     // =========================================================================
@@ -16,13 +16,13 @@ class AllowedSecurityPolicy extends BaseSecurityPolicy
      */
     public function __construct($config = [])
     {
-        // Allowed tags
+        // Whitelisted tags
         $this->setTwigTags([
             'for',
             'if',
             'set',
         ]);
-        // Allowed filters
+        // Whitelisted filters
         $this->setTwigFilters([
             'capitalize',
             'date',
@@ -70,7 +70,7 @@ class AllowedSecurityPolicy extends BaseSecurityPolicy
             'ucfirst',
             'ucwords',
         ]);
-        // Allowed functions
+        // Whitelisted functions
         $this->setTwigFunctions([
             'date',
             'max',
