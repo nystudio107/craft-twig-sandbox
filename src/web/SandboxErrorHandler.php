@@ -6,19 +6,10 @@ use craft\helpers\Template;
 use craft\web\ErrorHandler;
 use ReflectionMethod;
 use Throwable;
-use Twig\Environment;
 use Twig\Sandbox\SecurityError;
 
 class SandboxErrorHandler extends ErrorHandler
 {
-    // Public Properties
-    // =========================================================================
-
-    /**
-     * @var Environment|null The Twig Environment being used by the SandboxView
-     */
-    public ?Environment $env = null;
-
     // Public Methods
     // =========================================================================
 
