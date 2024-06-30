@@ -2,9 +2,12 @@
 
 namespace nystudio107\crafttwigsandbox\web;
 
+use Craft;
 use craft\web\twig\Environment;
 use craft\web\View;
+use nystudio107\crafttwigsandbox\console\SandboxErrorHandler as ConsoleSandboxErrorHandler;
 use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
+use nystudio107\crafttwigsandbox\web\SandboxErrorHandler as WebSandboxErrorHandler;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicyInterface;
 
@@ -22,9 +25,9 @@ class SandboxView extends View
     // =========================================================================
 
     /**
-     * @var SandboxErrorHandler|null The error handler to use for the SandboxView
+     * @var WebSandboxErrorHandler|ConsoleSandboxErrorHandler|null The error handler to use for the SandboxView
      */
-    protected ?SandboxErrorHandler $sandboxErrorHandler = null;
+    protected WebSandboxErrorHandler|ConsoleSandboxErrorHandler|null $sandboxErrorHandler = null;
 
     // Public Methods
     // =========================================================================
@@ -35,8 +38,11 @@ class SandboxView extends View
     public function init(): void
     {
         parent::init();
-        // Use the passed in ErrorHandler, or create a default error handler
-        $this->sandboxErrorHandler = $this->sandboxErrorHandler ?? new SandboxErrorHandler();
+        if (Craft::$app->getRequest()->getIsConsoleRequest()) {
+            $this->sandboxErrorHandler = new ConsoleSandboxErrorHandler();
+        } else {
+            $this->sandboxErrorHandler = new WebSandboxErrorHandler();
+        }
         // Use the passed in SecurityPolicy, or create a default security policy
         $this->securityPolicy = $this->securityPolicy ?? new WhitelistSecurityPolicy();
     }
@@ -49,7 +55,6 @@ class SandboxView extends View
         $twig = parent::createTwig();
         // Add the SandboxExtension with our SecurityPolicy after Twig is created
         $twig->addExtension(new SandboxExtension($this->securityPolicy, true));
-        $this->sandboxErrorHandler->env = $twig;
 
         return $twig;
     }
