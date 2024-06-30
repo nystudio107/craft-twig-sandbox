@@ -1,0 +1,52 @@
+{
+  "name": "nystudio107/craft-twig-sandbox",
+  "description": "Allows you to easily create a sandboxed Twig environment where you can control what tags, filters, and functions are allowed",
+  "version": "5.0.0",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "twig",
+    "sandbox",
+    "security"
+  ],
+  "support": {
+    "docs": "https://github.com/nystudio107/craft-twig-sandbox/blob/v5/README.md",
+    "issues": "https://github.com/nystudio107/craft-twig-sandbox/issues",
+    "source": "https://github.com/nystudio107/craft-twig-sandbox"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "nystudio107",
+      "homepage": "https://nystudio107.com"
+    }
+  ],
+  "require": {
+    "craftcms/cms": "^5.0.0",
+    "twig/twig": "^3.0.0"
+  },
+  "require-dev": {
+    "craftcms/ecs": "dev-main",
+    "craftcms/phpstan": "dev-main",
+    "craftcms/rector": "dev-main"
+  },
+  "scripts": {
+    "phpstan": "phpstan --ansi --memory-limit=1G",
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --fix --ansi"
+  },
+  "config": {
+    "allow-plugins": {
+      "craftcms/plugin-installer": true,
+      "yiisoft/yii2-composer": true
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "nystudio107\\crafttwigsandbox\\": "src/"
+    }
+  }
+}
