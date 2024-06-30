@@ -6,11 +6,11 @@ use craft\base\Model;
 use Twig\Sandbox\SecurityPolicyInterface;
 
 /**
- * @property $twigTags array|string[] Tags for the Twig sandbox Security Policy
- * @property $twigFilters array|string[] Filters for the Twig sandbox Security Policy
- * @property $twigFunctions array|string[] Functions for the Twig sandbox Security Policy
- * @property $twigMethods array|string[] Object methods for the Twig sandbox Security Policy
- * @property $twigProperties array|string[] Object properties for the Twig sandbox Security Policy
+ * @property array|string[] $twigTags  Tags for the Twig sandbox Security Policy
+ * @property array|string[] $twigFilters  Filters for the Twig sandbox Security Policy
+ * @property array|string[] $twigFunctions  Functions for the Twig sandbox Security Policy
+ * @property array|string[] $twigMethods  Object methods for the Twig sandbox Security Policy
+ * @property array|string[] $twigProperties  Object properties for the Twig sandbox Security Policy
  */
 abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterface
 {

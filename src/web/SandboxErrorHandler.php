@@ -11,11 +11,16 @@ use Twig\Sandbox\SecurityError;
 
 class SandboxErrorHandler extends ErrorHandler
 {
+    // Public Properties
+    // =========================================================================
 
     /**
      * @var Environment|null The Twig Environment being used by the SandboxView
      */
     public ?Environment $env = null;
+
+    // Public Methods
+    // =========================================================================
 
     /**
      * @inheritDoc

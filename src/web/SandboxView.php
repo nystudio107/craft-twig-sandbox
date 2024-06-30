@@ -2,7 +2,6 @@
 
 namespace nystudio107\crafttwigsandbox\web;
 
-use craft\web\ErrorHandler;
 use craft\web\twig\Environment;
 use craft\web\View;
 use nystudio107\crafttwigsandbox\twig\AllowedSecurityPolicy;
@@ -11,15 +10,24 @@ use Twig\Sandbox\SecurityPolicyInterface;
 
 class SandboxView extends View
 {
+    // Public Properties
+    // =========================================================================
+
     /**
      * @var SecurityPolicyInterface|null The security policy to use for the SandboxView
      */
     public ?SecurityPolicyInterface $securityPolicy = null;
 
+    // Protected Properties
+    // =========================================================================
+
     /**
-     * @var ErrorHandler|null The error handler to use for the SandboxView
+     * @var SandboxErrorHandler|null The error handler to use for the SandboxView
      */
-    public ?ErrorHandler $sandboxErrorHandler = null;
+    protected ?SandboxErrorHandler $sandboxErrorHandler = null;
+
+    // Public Methods
+    // =========================================================================
 
     /**
      * @inheritDoc
