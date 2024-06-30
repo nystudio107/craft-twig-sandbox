@@ -5,7 +5,7 @@ namespace nystudio107\crafttwigsandbox\web;
 use craft\web\ErrorHandler;
 use craft\web\twig\Environment;
 use craft\web\View;
-use modules\sitemodule\twig\AllowedSecurityPolicy;
+use nystudio107\crafttwigsandbox\twig\AllowedSecurityPolicy;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicyInterface;
 
