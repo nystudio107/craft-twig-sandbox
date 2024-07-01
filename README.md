@@ -60,7 +60,7 @@ $result = $sandboxView->renderTemplate();
 
 If any tags, filters, or functions are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
 
-### `WhitelistSecurityPolicy`
+### WhitelistSecurityPolicy
 
 The `WhitelistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are** allowed.
 
@@ -79,7 +79,7 @@ $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
 
-### `BlacklistSecurityPolicy`
+### BlacklistSecurityPolicy
 
 The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are not** allowed.
 
