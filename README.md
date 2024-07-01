@@ -22,7 +22,19 @@ To install Craft Twig Sandbox, follow these steps:
 
 ## About Craft Twig Sandbox
 
-Blah blah
+Rather than just creating a new Twig `Environment` for the sandbox, Craft Twig Sandbox sub-classes the Craft `View` class, which has a few benefits:
+
+* You get all of the Craft provided tags, filters, functions, globals, etc. available to you if you want
+* Plugin-provided tags, filters, and functions are available if you want
+* You get access to the familiar `.renderObjectTemplate()`, `.renderString()`, `.renderPageTemplate()` and `.renderTemplate()` methods
+* All of the normal Craft events and scaffolding related to template rendering are present as well
+
+It also implements an `ErrorHandler` that sub-classes the Craft `ErrorHandler` which is used to handle exceptions that happen when rendering Twig templates. This allows it to properly handle and display exceptions such as:
+
+```
+Twig\Sandbox\SecurityNotAllowedFunctionError
+Function "dump" is not allowed in "__string_template__b0120324b463b0e0d2c2618b7c5ce3ba" at line 1.
+```
 
 ## Using Craft Twig Sandbox
 
@@ -100,6 +112,20 @@ $securityPolicy = new SecurityPolicy([
 $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
+
+### Errata
+
+Currently neither the `WhitelistSecurityPolicy` nor the `BlacklistSecurityPolicy` support restricting object property access or object method access.
+
+If implemented, these would allow you to restrict access to things like `craft.app.config`.
+
+We'd just need to implement the `checkMethodAllowed()` and `checkPropertyAllowed()` methods in the respective security policies.
+
+The way it'd work is in the `$twigMethods` and `$twigProperties` properties on the `BaseSecurityPolicy` object, the array key would be the object class, and the value would be an array of methods or properties, respectively.
+
+It would only apply the security policy (whether a whitelist or a blacklist) to known object classes.
+
+This _might_ be something we add in the future. Of course, you're be free to implement them yourself in your own custom `SecurityPolicy` as well.
 
 ## Craft Twig Sandbox Roadmap
 
