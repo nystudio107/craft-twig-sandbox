@@ -30,7 +30,7 @@
     "craftcms/ecs": "dev-main",
     "craftcms/phpstan": "dev-main",
     "craftcms/rector": "dev-main",
-    "nystudio107/craft-closure": "^1.0.6"
+    "nystudio107/craft-closure": "^1.0.5"
   },
   "scripts": {
     "phpstan": "phpstan --ansi --memory-limit=1G",
