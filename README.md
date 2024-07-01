@@ -86,7 +86,7 @@ $result = $sandboxView->renderString("{{ dump() }}", []);
 
 ### Custom SecurityPolicy
 
-You can also create your own custom `SecurityPolicy` to use, it just needs to conform to the Twig `SecurityPolicyInterface`:
+You can also create your own custom `SecurityPolicy` to use, it just needs to conform to the Twig [`SecurityPolicyInterface`](https://github.com/twigphp/Twig/blob/3.x/src/Sandbox/SecurityPolicyInterface.php):
 
 ```php
 use my\custom\SecurityPolicy;
@@ -101,7 +101,6 @@ $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
 
-...
 ## Craft Twig Sandbox Roadmap
 
 Some things to do, and ideas for potential features:
