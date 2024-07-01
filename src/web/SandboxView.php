@@ -5,6 +5,7 @@ namespace nystudio107\crafttwigsandbox\web;
 use Craft;
 use craft\web\twig\Environment;
 use craft\web\View;
+use nystudio107\closure\Closure;
 use nystudio107\crafttwigsandbox\console\SandboxErrorHandler as ConsoleSandboxErrorHandler;
 use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
 use nystudio107\crafttwigsandbox\web\SandboxErrorHandler as WebSandboxErrorHandler;
@@ -51,6 +52,11 @@ class SandboxView extends View
         $twig = parent::createTwig();
         // Add the SandboxExtension with our SecurityPolicy after Twig is created
         $twig->addExtension(new SandboxExtension($this->securityPolicy, true));
+        // Support Craft Closure
+        if (Craft::$app->hasModule('closure')) {
+            // Add it to our Twig sandbox
+            Closure::getInstance()?->addClosure($twig);
+        }
 
         return $twig;
     }
