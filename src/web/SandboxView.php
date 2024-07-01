@@ -38,11 +38,7 @@ class SandboxView extends View
     public function init(): void
     {
         parent::init();
-        if (Craft::$app->getRequest()->getIsConsoleRequest()) {
-            $this->sandboxErrorHandler = new ConsoleSandboxErrorHandler();
-        } else {
-            $this->sandboxErrorHandler = new WebSandboxErrorHandler();
-        }
+        $this->sandboxErrorHandler = Craft::$app->getRequest()->getIsConsoleRequest() ? new ConsoleSandboxErrorHandler() : new WebSandboxErrorHandler();
         // Use the passed in SecurityPolicy, or create a default security policy
         $this->securityPolicy = $this->securityPolicy ?? new WhitelistSecurityPolicy();
     }
