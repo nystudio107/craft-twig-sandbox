@@ -11,8 +11,6 @@ use Twig\Sandbox\SecurityPolicyInterface;
  * @property array|string[] $twigFunctions  Functions for the Twig sandbox Security Policy
  * @property array|string[] $twigMethods  Object methods for the Twig sandbox Security Policy
  * @property array|string[] $twigProperties  Object properties for the Twig sandbox Security Policy
- * @property bool $strictObjectChecks  When checking object method & property access, should objects not defined
- *                                      in $twigMethods & $twigProperties throw an exception?
  */
 abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterface
 {
@@ -48,12 +46,6 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
      */
     private array $twigProperties = [
     ];
-
-    /**
-     * @var bool When checking object method & property access, should objects not defined
-     *           in $twigMethods & $twigProperties throw an exception?
-     */
-    private bool $strictObjectChecks = false;
 
     // Public Methods
     // =========================================================================
@@ -138,15 +130,5 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
     public function setTwigProperties(array $properties): void
     {
         $this->twigProperties = $properties;
-    }
-
-    public function getStrictObjectChecks(): bool
-    {
-        return $this->strictObjectChecks;
-    }
-
-    public function setStrictObjectChecks(bool $strict): void
-    {
-        $this->strictObjectChecks = $strict;
     }
 }
