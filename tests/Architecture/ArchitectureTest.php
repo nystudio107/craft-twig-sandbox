@@ -4,6 +4,6 @@
  * Tests the architecture of the plugin.
  */
 
-test('Source code does not contain any “dump or die” statements')
+arch('globals')
     ->expect(['var_dump', 'die'])
     ->not->toBeUsed();
