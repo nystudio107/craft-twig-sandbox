@@ -19,7 +19,7 @@ jobs:
           - name: 'Coding Standards'
             run: composer fix-cs
           - name: 'Pest tests'
-            run: composer test
+            run: vendor/bin/pest
     name: ${{ matrix.actions.name }}
     runs-on: ubuntu-latest
     steps:
