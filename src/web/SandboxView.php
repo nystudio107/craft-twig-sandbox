@@ -7,7 +7,7 @@ use craft\web\twig\Environment;
 use craft\web\View;
 use nystudio107\closure\Closure;
 use nystudio107\crafttwigsandbox\console\SandboxErrorHandler as ConsoleSandboxErrorHandler;
-use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
+use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
 use nystudio107\crafttwigsandbox\web\SandboxErrorHandler as WebSandboxErrorHandler;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicyInterface;
@@ -41,7 +41,7 @@ class SandboxView extends View
         parent::init();
         $this->sandboxErrorHandler = Craft::$app->getRequest()->getIsConsoleRequest() ? new ConsoleSandboxErrorHandler() : new WebSandboxErrorHandler();
         // Use the passed in SecurityPolicy, or create a default security policy
-        $this->securityPolicy = $this->securityPolicy ?? new WhitelistSecurityPolicy();
+        $this->securityPolicy = $this->securityPolicy ?? new BlacklistSecurityPolicy();
     }
 
     /**

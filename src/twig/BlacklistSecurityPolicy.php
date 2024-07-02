@@ -2,9 +2,13 @@
 
 namespace nystudio107\crafttwigsandbox\twig;
 
+use Twig\Markup;
 use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
+use Twig\Sandbox\SecurityNotAllowedMethodError;
+use Twig\Sandbox\SecurityNotAllowedPropertyError;
 use Twig\Sandbox\SecurityNotAllowedTagError;
+use Twig\Template;
 
 class BlacklistSecurityPolicy extends BaseSecurityPolicy
 {
@@ -222,7 +226,23 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
      */
     public function checkMethodAllowed($obj, $method): void
     {
-        // Allow all methods
+        if ($obj instanceof Template || $obj instanceof Markup) {
+            return;
+        }
+
+        $method = strtr($method, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+        $allowed = true;
+        foreach ($this->getTwigMethods() as $class => $methods) {
+            if ($obj instanceof $class && \in_array($method, $methods)) {
+                $allowed = false;
+                break;
+            }
+        }
+
+        if (!$allowed) {
+            $class = \get_class($obj);
+            throw new SecurityNotAllowedMethodError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, $class), $class, $method);
+        }
     }
 
     /**
@@ -230,6 +250,17 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
      */
     public function checkPropertyAllowed($obj, $property): void
     {
-        // Allow all properties
+        $allowed = true;
+        foreach ($this->getTwigProperties() as $class => $properties) {
+            if ($obj instanceof $class && \in_array($property, \is_array($properties) ? $properties : [$properties])) {
+                $allowed = false;
+                break;
+            }
+        }
+
+        if (!$allowed) {
+            $class = \get_class($obj);
+            throw new SecurityNotAllowedPropertyError(sprintf('Accessing "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
+        }
     }
 }
