@@ -56,10 +56,69 @@ $result = $sandboxView->renderPageTemplate();
 $result = $sandboxView->renderTemplate();
 ```
 
-...and they will be rendered using the default `WhitelistSecurityPolicy` so only whitelisted Twig tags, filters, and functions will be allowed.
+...and they will be rendered using the default `BlacklistSecurityPolicy` so blacklisted Twig tags, filters, and functions will not be allowed.
 
 If any tags, filters, or functions are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
 
+### BlacklistSecurityPolicy
+
+The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are not** allowed.
+
+It defaults to [reasonable subset of blacklisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/BlacklistSecurityPolicy.php#L19) Twig tags, filters, and functions, but you can customize it as you see fit:
+
+```php
+use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
+use nystudio107\crafttwigsandbox\web\SandboxView;
+
+$securityPolicy = new BlacklistSecurityPolicy([
+   'twigTags' => ['import'],
+   'twigFilters' => ['base64_decode', 'base64_encode'],
+   'twigFunctions' => ['dump'],
+]);
+$sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
+$result = $sandboxView->renderString("{{ dump() }}", []);
+```
+
+You can also control what object methods and properties are allowed to be accessed. By default, the `BlacklistSecurityPolicy` does not restrict access to any object methods or properties.
+
+For example, if you didn't want people to be able to access the `password` property of the `DbConfig` object via:
+
+```twig
+{{ craft.app.config.db.password }}
+```
+or
+```twig
+{{ craft.app.getConfig().getDb().password }}
+```
+...you would do:
+
+```php
+use craft\config\DbConfig;
+use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
+use nystudio107\crafttwigsandbox\web\SandboxView;
+
+$securityPolicy = new BlacklistSecurityPolicy([
+   'twigProperties' => [
+       DbConfig::class => ['password']
+   ],
+   'twigMethods' => [
+       DbConfig::class => ['getPassword']
+   ],
+]);
+$sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
+$result = $sandboxView->renderString("{{ craft.app.config.db.password }}", []);
+```
+
+If you don't want any properties or methods to be able to be accessed on a given object, you can just pass in an empty array:
+
+```php
+   'twigProperties' => [
+       DbConfig::class => []
+   ],
+   'twigMethods' => [
+       DbConfig::class => []
+   ],
+```
 ### WhitelistSecurityPolicy
 
 The `WhitelistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are** allowed.
@@ -79,23 +138,43 @@ $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
 
-### BlacklistSecurityPolicy
+You can also control what object methods and properties are allowed to be accessed. By default, the `WhitelistSecurityPolicy` restricts access to all object methods or properties.
 
-The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are not** allowed.
+That means you must explicitly specify each object property or method.
 
-It defaults to [reasonable subset of blacklisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/BlacklistSecurityPolicy.php#L19) Twig tags, filters, and functions, but you can customize it as you see fit:
+For example, if you wanted to grant access to:
+
+```twig
+{{ craft.app.config.general.devMode }}
+```
+or
+```twig
+{{ craft.app.getConfig().getGeneral().getDevMode() }}
+```
+...you would do:
 
 ```php
+use craft\config\GeneralConfig;
+use craft\services\Config;
+use craft\web\Application;
+use craft\web\twig\variables\CraftVariable;
 use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
 use nystudio107\crafttwigsandbox\web\SandboxView;
 
-$securityPolicy = new BlacklistSecurityPolicy([
-   'twigTags' => ['import'],
-   'twigFilters' => ['base64_decode', 'base64_encode'],
-   'twigFunctions' => ['dump'],
+$securityPolicy = new WhitelistSecurityPolicy([
+   'twigProperties' => [
+       CraftVariable::class => ['app'],
+       Application::class => ['config'],
+       Config::class => ['general'],
+       GeneralConfig::class => ['devMode'],
+   ]
+   'twigMethods' => [
+       Application::class => ['getConfig'],
+       Config::class => ['getGeneral'],
+   ],
 ]);
 $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
-$result = $sandboxView->renderString("{{ dump() }}", []);
+$result = $sandboxView->renderString("{{ craft.app.config.general.devMode }}", []);
 ```
 
 ### Custom SecurityPolicy
@@ -114,20 +193,6 @@ $securityPolicy = new SecurityPolicy([
 $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
-
-### Errata
-
-Currently neither the `WhitelistSecurityPolicy` nor the `BlacklistSecurityPolicy` support restricting object property access or object method access.
-
-If implemented, these would allow you to restrict access to things like `craft.app.config`.
-
-We'd just need to implement the `checkMethodAllowed()` and `checkPropertyAllowed()` methods in the respective security policies.
-
-The way it'd work is in the `$twigMethods` and `$twigProperties` properties on the `BaseSecurityPolicy` object, the array key would be the object class, and the value would be an array of methods or properties, respectively.
-
-It would only apply the security policy (whether a whitelist or a blacklist) to known object classes.
-
-This _might_ be something we add in the future. Of course, you're be free to implement them yourself in your own custom `SecurityPolicy` as well.
 
 ## Craft Twig Sandbox Roadmap
 
