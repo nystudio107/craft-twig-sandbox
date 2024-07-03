@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: false
           MYSQL_ROOT_PASSWORD: root
@@ -57,5 +57,5 @@ jobs:
           cp .github/craft/craft craft
           cp .github/craft/bootstrap.php bootstrap.php
       - name: Install Craft
-        run: php craft install/craft --username=admin --password=password --email=test@nystudio107.com --site-name=Test --site-url=$DEFAULT_SITE_URL --language=en --interactive=0
+        run: php craft install/craft --username=admin --password=password --email=test@nystudio107.com --site-name=Test --site-url=http://test.local --language=en --interactive=0
       - run: ${{ matrix.actions.run }}
