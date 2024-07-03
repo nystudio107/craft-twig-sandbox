@@ -57,5 +57,5 @@ jobs:
           cp .github/craft/craft craft
           cp .github/craft/bootstrap.php bootstrap.php
       - name: Install Craft
-        run: php craft install/craft --username=admin --password=password --email=test@craftcms.com --site-name=Craft Blog --site-url=$DEFAULT_SITE_URL --interactive=0
+        run: php craft install/craft --username=admin --password=password --email=test@nystudio107.com --site-name=Test --site-url=$DEFAULT_SITE_URL --language=en --interactive=0
       - run: ${{ matrix.actions.run }}
