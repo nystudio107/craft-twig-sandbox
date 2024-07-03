@@ -109,16 +109,17 @@ $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ craft.app.config.db.password }}", []);
 ```
 
-If you don't want any properties or methods to be able to be accessed on a given object, you can just pass in an empty array:
+If you don't want any properties or methods to be able to be accessed on a given object, you can pass in a `*` wildcard:
 
 ```php
    'twigProperties' => [
-       DbConfig::class => []
+       DbConfig::class => '*'
    ],
    'twigMethods' => [
-       DbConfig::class => []
+       DbConfig::class => '*'
    ],
 ```
+
 ### WhitelistSecurityPolicy
 
 The `WhitelistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are** allowed.
@@ -175,6 +176,17 @@ $securityPolicy = new WhitelistSecurityPolicy([
 ]);
 $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ craft.app.config.general.devMode }}", []);
+```
+
+If you want all properties or methods to be able to be accessed on a given object, you can pass in a `*` wildcard:
+
+```php
+   'twigProperties' => [
+       DbConfig::class => '*'
+   ],
+   'twigMethods' => [
+       DbConfig::class => '*'
+   ],
 ```
 
 ### Custom SecurityPolicy
