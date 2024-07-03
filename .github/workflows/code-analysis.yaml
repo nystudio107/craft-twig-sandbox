@@ -50,7 +50,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --no-ansi --no-progress
       - name: Prepare Craft environment
-        run: cp .github/workflows/.env.mysql .env
+        run: cp .github/craft/.env.mysql .env
+        run: cp .github/craft/craft .craft
+        run: cp .github/craft/bootstrap.php bootstrap.php
       - name: Add Docker database host aliases to build environment
         run: sudo echo "127.0.0.1 mysql" | sudo tee -a /etc/hosts
       - name: Install Craft
