@@ -1,4 +1,4 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/quality-score.png?b=v5)](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/coverage.png?b=v5)](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/?branch=develop) [![Build Status](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/build.png?b=v5)](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/build-status/develop) [![Code Intelligence Status](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/code-intelligence.svg?b=v5)](https://scrutinizer-ci.com/code-intelligence)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/quality-score.png?b=v4)](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/coverage.png?b=v4)](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/?branch=develop) [![Build Status](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/build.png?b=v4)](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/build-status/develop) [![Code Intelligence Status](https://scrutinizer-ci.com/g/nystudio107/craft-twig-sandbox/badges/code-intelligence.svg?b=v4)](https://scrutinizer-ci.com/code-intelligence)
 
 # Craft Twig Sandbox
 
@@ -6,7 +6,7 @@ Allows you to easily create a sandboxed Twig environment where you can control w
 
 ## Requirements
 
-Craft Twig Sandbox requires Craft CMS 5.x
+Craft Twig Sandbox requires Craft CMS 4.x
 
 ## Installation
 
@@ -64,7 +64,7 @@ If any tags, filters, functions, or object methods/properties are used that are 
 
 The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, functions, and object methods/properties that **are not** allowed.
 
-It defaults to [reasonable subset of blacklisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/BlacklistSecurityPolicy.php#L19) Twig tags, filters, and functions, but you can customize it as you see fit:
+It defaults to [reasonable subset of blacklisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v4/src/twig/BlacklistSecurityPolicy.php#L19) Twig tags, filters, and functions, but you can customize it as you see fit:
 
 ```php
 use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
@@ -124,7 +124,7 @@ If you don't want any properties or methods to be able to be accessed on a given
 
 The `WhitelistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, functions, and object methods/properties that **are** allowed.
 
-It defaults to [reasonable subset of whitelisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/WhitelistSecurityPolicy.php#L19) Twig tags, filters, functions, and object methods/properties, but you can customize it as you see fit:
+It defaults to [reasonable subset of whitelisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v4/src/twig/WhitelistSecurityPolicy.php#L19) Twig tags, filters, functions, and object methods/properties, but you can customize it as you see fit:
 
 ```php
 use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
