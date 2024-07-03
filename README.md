@@ -2,7 +2,7 @@
 
 # Craft Twig Sandbox
 
-Allows you to easily create a sandboxed Twig environment where you can control what tags, filters, and functions are allowed
+Allows you to easily create a sandboxed Twig environment where you can control what tags, filters, functions, and object methods/properties are allowed
 
 ## Requirements
 
@@ -24,8 +24,8 @@ To install Craft Twig Sandbox, follow these steps:
 
 Rather than just creating a new Twig `Environment` for the sandbox, Craft Twig Sandbox sub-classes the Craft `View` class, which has a few benefits:
 
-* You get all of the Craft provided tags, filters, functions, globals, etc. available to you if you want
-* Plugin-provided tags, filters, and functions are available if you want
+* You get all of the Craft provided tags, filters, functions, objects, globals, etc. available to you if you want
+* Plugin-provided tags, filters, functions, and objects are available if you want
 * You get access to the familiar `.renderObjectTemplate()`, `.renderString()`, `.renderPageTemplate()` and `.renderTemplate()` methods
 * All of the normal Craft events and scaffolding related to template rendering are present as well
 
@@ -56,13 +56,13 @@ $result = $sandboxView->renderPageTemplate();
 $result = $sandboxView->renderTemplate();
 ```
 
-...and they will be rendered using the default `BlacklistSecurityPolicy` so blacklisted Twig tags, filters, and functions will not be allowed.
+...and they will be rendered using the default `BlacklistSecurityPolicy` so blacklisted Twig tags, filters, functions, and object methods/properties will not be allowed.
 
-If any tags, filters, or functions are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
+If any tags, filters, functions, or object methods/properties are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
 
 ### BlacklistSecurityPolicy
 
-The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are not** allowed.
+The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, functions, and object methods/properties that **are not** allowed.
 
 It defaults to [reasonable subset of blacklisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/BlacklistSecurityPolicy.php#L19) Twig tags, filters, and functions, but you can customize it as you see fit:
 
@@ -122,9 +122,9 @@ If you don't want any properties or methods to be able to be accessed on a given
 
 ### WhitelistSecurityPolicy
 
-The `WhitelistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, and functions that **are** allowed.
+The `WhitelistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, functions, and object methods/properties that **are** allowed.
 
-It defaults to [reasonable subset of whitelisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/WhitelistSecurityPolicy.php#L19) Twig tags, filters, and functions, but you can customize it as you see fit:
+It defaults to [reasonable subset of whitelisted](https://github.com/nystudio107/craft-twig-sandbox/blob/develop-v5/src/twig/WhitelistSecurityPolicy.php#L19) Twig tags, filters, functions, and object methods/properties, but you can customize it as you see fit:
 
 ```php
 use nystudio107\crafttwigsandbox\twig\WhitelistSecurityPolicy;
@@ -198,9 +198,6 @@ use my\custom\SecurityPolicy;
 use nystudio107\crafttwigsandbox\web\SandboxView;
 
 $securityPolicy = new SecurityPolicy([
-   'twigTags' => ['import'],
-   'twigFilters' => ['base64_decode', 'base64_encode'],
-   'twigFunctions' => ['dump'],
 ]);
 $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
