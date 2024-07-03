@@ -40,7 +40,7 @@
     }
   ],
   "scripts": {
-    "test": "pest --test-directory=tests",
+    "test": "pest",
     "lint": "pest --coverage",
     "phpstan": "phpstan --ansi --memory-limit=1G",
     "check-cs": "ecs check --ansi",
