@@ -129,6 +129,11 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
 
     public function setTwigProperties(array $properties): void
     {
-        $this->twigProperties = $properties;
+        $this->twigProperties = [];
+        foreach ($properties as $class => $p) {
+            $this->twigProperties[$class] = array_map(static function($value) {
+                return strtr($value, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+            }, is_array($p) ? $p : [$p]);
+        }
     }
 }
