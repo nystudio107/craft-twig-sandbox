@@ -123,9 +123,15 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
         $method = strtr($method, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
         $allowed = false;
         foreach ($this->getTwigMethods() as $class => $methods) {
-            if ($obj instanceof $class && \in_array($method, $methods)) {
-                $allowed = true;
-                break;
+            if ($obj instanceof $class) {
+                if ($methods === '*') {
+                    $allowed = true;
+                    break;
+                }
+                if (is_array($methods) && in_array($method, $methods, true)) {
+                    $allowed = true;
+                    break;
+                }
             }
         }
 
@@ -142,9 +148,15 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
     {
         $allowed = false;
         foreach ($this->getTwigProperties() as $class => $properties) {
-            if ($obj instanceof $class && \in_array($property, \is_array($properties) ? $properties : [$properties])) {
-                $allowed = true;
-                break;
+            if ($obj instanceof $class) {
+                if ($properties === '*') {
+                    $allowed = true;
+                    break;
+                }
+                if (is_array($properties) && in_array($property, $properties, true)) {
+                    $allowed = true;
+                    break;
+                }
             }
         }
 

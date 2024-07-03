@@ -233,9 +233,15 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
         $method = strtr($method, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
         $allowed = true;
         foreach ($this->getTwigMethods() as $class => $methods) {
-            if ($obj instanceof $class && \in_array($method, $methods)) {
-                $allowed = false;
-                break;
+            if ($obj instanceof $class) {
+                if ($methods === '*') {
+                    $allowed = false;
+                    break;
+                }
+                if (is_array($methods) && in_array($method, $methods, true)) {
+                    $allowed = false;
+                    break;
+                }
             }
         }
 
@@ -252,9 +258,15 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
     {
         $allowed = true;
         foreach ($this->getTwigProperties() as $class => $properties) {
-            if ($obj instanceof $class && \in_array($property, \is_array($properties) ? $properties : [$properties])) {
-                $allowed = false;
-                break;
+            if ($obj instanceof $class) {
+                if ($properties === '*') {
+                    $allowed = false;
+                    break;
+                }
+                if (is_array($properties) && in_array($property, $properties, true)) {
+                    $allowed = false;
+                    break;
+                }
             }
         }
 
