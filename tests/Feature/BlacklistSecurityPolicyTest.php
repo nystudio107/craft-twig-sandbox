@@ -78,6 +78,17 @@ test('Blacklisted object method is not allowed', function() {
     $sandboxView->renderString('{% set password = craft.app.getConfig().getDb().password("") %}');
 })->throws(SecurityNotAllowedMethodError::class);
 
+test('Blacklisted wildcard object method is not allowed', function() {
+    $sandboxView = new SandboxView([
+        'securityPolicy' => new BlacklistSecurityPolicy([
+            'twigMethods' => [
+                DbConfig::class => '*',
+            ],
+        ]),
+    ]);
+    $sandboxView->renderString('{% set password = craft.app.getConfig().getDb().password("") %}');
+})->throws(SecurityNotAllowedMethodError::class);
+
 test('Non blacklisted object method is allowed', function() {
     $sandboxView = new SandboxView([
         'securityPolicy' => new BlacklistSecurityPolicy([
@@ -92,6 +103,17 @@ test('Blacklisted object property is not allowed', function() {
         'securityPolicy' => new BlacklistSecurityPolicy([
             'twigProperties' => [
                 DbConfig::class => ['password'],
+            ],
+        ]),
+    ]);
+    $sandboxView->renderString('{{ craft.app.config.db.password }}');
+})->throws(SecurityNotAllowedPropertyError::class);
+
+test('Blacklisted wildcard object property is not allowed', function() {
+    $sandboxView = new SandboxView([
+        'securityPolicy' => new BlacklistSecurityPolicy([
+            'twigProperties' => [
+                DbConfig::class => '*',
             ],
         ]),
     ]);

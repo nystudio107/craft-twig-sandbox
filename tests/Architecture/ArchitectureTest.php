@@ -5,5 +5,5 @@
  */
 
 arch('globals')
-    ->expect(['var_dump', 'die'])
+    ->expect(['var_dump', 'die', 'Craft::dd'])
     ->not->toBeUsed();

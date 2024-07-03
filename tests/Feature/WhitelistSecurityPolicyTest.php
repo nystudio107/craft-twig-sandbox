@@ -86,6 +86,22 @@ test('Whitelisted object method is allowed', function() {
     $sandboxView->renderString('{% set dev = craft.app.getConfig().getGeneral().devMode(true) %}');
 })->throwsNoExceptions();
 
+test('Whitelisted wildcard object method is allowed', function() {
+    $sandboxView = new SandboxView([
+        'securityPolicy' => new WhitelistSecurityPolicy([
+            'twigMethods' => [
+                Application::class => '*',
+                Config::class => '*',
+                GeneralConfig::class => '*',
+            ],
+            'twigProperties' => [
+                CraftVariable::class => ['app'],
+            ]
+        ]),
+    ]);
+    $sandboxView->renderString('{% set dev = craft.app.getConfig().getGeneral().devMode(true) %}');
+})->throwsNoExceptions();
+
 test('Non whitelisted object method is not allowed', function() {
     $sandboxView = new SandboxView([
         'securityPolicy' => new WhitelistSecurityPolicy([
@@ -105,6 +121,20 @@ test('Whitelisted object property is allowed', function() {
                 Application::class => ['config'],
                 Config::class => ['general'],
                 GeneralConfig::class => ['devMode'],
+                CraftVariable::class => ['app'],
+            ]
+        ]),
+    ]);
+    $sandboxView->renderString('{{ craft.app.config.general.devMode }}');
+})->throwsNoExceptions();
+
+test('Whitelisted wildcard object property is allowed', function() {
+    $sandboxView = new SandboxView([
+        'securityPolicy' => new WhitelistSecurityPolicy([
+            'twigProperties' => [
+                Application::class => '*',
+                Config::class => '*',
+                GeneralConfig::class => '*',
                 CraftVariable::class => ['app'],
             ]
         ]),
