@@ -8,13 +8,6 @@ build:
     hosts:
       testcraft.test: '127.0.0.1'
     variables:
-      DB_DSN: 'mysql:host=127.0.0.1;port=3306;dbname=test'
-      DB_USER: 'root'
-      DB_PASSWORD: 'root'
-      DB_SCHEMA: ''
-      DB_TABLE_PREFIX: ''
-      SECURITY_KEY: '12345'
-      DEFAULT_SITE_URL: 'http://test.local/'
       XDEBUG_MODE: 'coverage'
   cache:
     directories:
@@ -23,10 +16,12 @@ build:
       - ~/.composer/cache/
   dependencies:
     before:
-      - mysql -uroot -h 127.0.0.1 -e 'CREATE DATABASE test'
+      - sudo echo "127.0.0.1 mysql" | sudo tee -a /etc/hosts
+      - mysql -uroot -h mysql -e 'CREATE DATABASE test'
       - cp .github/craft/.env.mysql .env
       - cp .github/craft/craft craft
       - cp .github/craft/bootstrap.php bootstrap.php
+      - php craft install/craft --username=admin --password=password --email=test@nystudio107.com --site-name=Test --site-url=http://test.local --language=en --interactive=0
   nodes:
     analysis:
       services:
