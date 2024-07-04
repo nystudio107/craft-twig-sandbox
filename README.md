@@ -237,6 +237,27 @@ This will create a globally available component that you can use via:
 Craft::$app->sandboxView->renderString('{% set password = craft.app.getConfig().getDb().password("") %}');
 ```
 
+You can even globally replace the default Craft `view` with a `SandboxView` if you want:
+
+```php
+return [
+    // ...
+    'components' => [
+        'view' => [
+            'class' => SandboxView::class,
+            'securityPolicy' => new BlacklistSecurityPolicy([
+                'twigProperties' => [
+                    DbConfig::class => '*'
+                ],
+                'twigMethods' => [
+                    DbConfig::class => '*'
+                ],
+            ]),
+        ],
+    ],
+];
+```
+
 ## Craft Twig Sandbox Roadmap
 
 Some things to do, and ideas for potential features:
