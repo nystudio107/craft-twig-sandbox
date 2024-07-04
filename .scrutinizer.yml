@@ -1,0 +1,52 @@
+build:
+  image: default-bionic
+  environment:
+    node:
+      version: v16
+    php:
+      version: 8.2
+    hosts:
+      test.local: '127.0.0.1'
+    variables:
+      XDEBUG_MODE: 'coverage'
+  cache:
+    directories:
+      - node_modules/
+      - vendor/
+      - ~/.composer/cache/
+  dependencies:
+    before:
+      - sudo echo "127.0.0.1 mysql" | sudo tee -a /etc/hosts
+      - mysql -uroot -h mysql -e 'CREATE DATABASE test'
+      - cp .github/craft/.env.mysql .env
+      - cp .github/craft/craft craft
+      - cp .github/craft/bootstrap.php bootstrap.php
+  nodes:
+    analysis:
+      services:
+        mysql: 8.0
+      project_setup:
+        override:
+          - true
+      tests:
+        override:
+          - php-scrutinizer-run
+          - js-scrutinizer-run
+    tests:
+      services:
+        mysql: 8.0
+      project_setup:
+        override:
+          - true
+      tests:
+        override:
+          - command: 'echo "done"'
+checks:
+  php: true
+  javascript: true
+coding_style:
+  php: { }
+filter:
+  excluded_paths:
+    - '*/dist/*'
+    - '*/lib/*'
