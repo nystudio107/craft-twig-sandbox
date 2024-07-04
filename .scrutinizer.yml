@@ -27,7 +27,7 @@ build:
   nodes:
     analysis:
       services:
-        mysql: 5.7
+        mysql: 8.0
       project_setup:
         override:
           - true
@@ -37,13 +37,13 @@ build:
           - js-scrutinizer-run
     tests:
       services:
-        mysql: 5.7
+        mysql: 8.0
       project_setup:
         override:
           - true
       tests:
         override:
-          - command: 'echo "done"'
+          - command: 'php vendor/bin/pest'
 checks:
   php: true
   javascript: true
