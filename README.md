@@ -60,6 +60,8 @@ $result = $sandboxView->renderTemplate();
 
 If any tags, filters, functions, or object methods/properties are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
 
+**N.B.:** For performance reasons, you should create a `SandboxView` once, and use it throughout your application's lifecycle, rather than re-creating it every time you want to render Twig using it.
+
 ### BlacklistSecurityPolicy
 
 The `BlacklistSecurityPolicy` is a `SecurityPolicy` that specifies the Twig tags, filters, functions, and object methods/properties that **are not** allowed.
@@ -201,6 +203,38 @@ $securityPolicy = new SecurityPolicy([
 ]);
 $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
+```
+
+### Adding a SandbowView via `config/app.php`
+
+If you want to make a Twig sandbox available globally in your Craft application, you can add the following to your `config/app.php`:
+
+```php
+use craft\config\DbConfig;
+use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
+use nystudio107\crafttwigsandbox\web\SandboxView;
+
+return [
+    // ...
+    'components' => [
+        'sandboxView' => [
+            'class' => SandboxView::class,
+            'securityPolicy' => new BlacklistSecurityPolicy([
+                'twigProperties' => [
+                    DbConfig::class => '*'
+                ],
+                'twigMethods' => [
+                    DbConfig::class => '*'
+                ],
+            ]),
+        ],
+    ],
+];
+```
+
+This will create a globally available component that you can use via:
+```php
+Craft::$app->sandboxView->renderString('{% set password = craft.app.getConfig().getDb().password("") %}');
 ```
 
 ## Craft Twig Sandbox Roadmap
