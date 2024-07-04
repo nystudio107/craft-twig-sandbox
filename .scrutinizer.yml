@@ -6,7 +6,7 @@ build:
     php:
       version: 8.2
     hosts:
-      testcraft.test: '127.0.0.1'
+      test.local: '127.0.0.1'
     variables:
       XDEBUG_MODE: 'coverage'
   cache:
@@ -17,7 +17,6 @@ build:
   dependencies:
     before:
       - sudo echo "127.0.0.1 mysql" | sudo tee -a /etc/hosts
-      - mysql -uroot -h mysql -e 'CREATE DATABASE test'
       - cp .github/craft/.env.mysql .env
       - cp .github/craft/craft craft
       - cp .github/craft/bootstrap.php bootstrap.php
