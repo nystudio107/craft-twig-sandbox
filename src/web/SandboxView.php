@@ -3,12 +3,11 @@
 namespace nystudio107\crafttwigsandbox\web;
 
 use Craft;
-use craft\web\twig\Environment;
 use craft\web\View;
-use nystudio107\closure\Closure;
 use nystudio107\crafttwigsandbox\console\SandboxErrorHandler as ConsoleSandboxErrorHandler;
 use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
 use nystudio107\crafttwigsandbox\web\SandboxErrorHandler as WebSandboxErrorHandler;
+use Throwable;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicyInterface;
 
@@ -42,23 +41,8 @@ class SandboxView extends View
         $this->sandboxErrorHandler = Craft::$app->getRequest()->getIsConsoleRequest() ? new ConsoleSandboxErrorHandler() : new WebSandboxErrorHandler();
         // Use the passed in SecurityPolicy, or create a default security policy
         $this->securityPolicy = $this->securityPolicy ?? new BlacklistSecurityPolicy();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createTwig(): Environment
-    {
-        $twig = parent::createTwig();
-        // Add the SandboxExtension with our SecurityPolicy after Twig is created
-        $twig->addExtension(new SandboxExtension($this->securityPolicy, true));
-        // Support Craft Closure
-        if (Craft::$app->hasModule('closure')) {
-            // Add it to our Twig sandbox
-            Closure::getInstance()?->addClosure($twig);
-        }
-
-        return $twig;
+        // Add the SandboxExtension with our SecurityPolicy lazily via ::registerTwigExtension()
+        $this->registerTwigExtension(new SandboxExtension($this->securityPolicy, true));
     }
 
     /**
@@ -69,7 +53,7 @@ class SandboxView extends View
         $result = '';
         try {
             $result = parent::renderObjectTemplate($template, $object, $variables, $templateMode);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->sandboxErrorHandler->handleException($e);
         }
 
@@ -84,7 +68,7 @@ class SandboxView extends View
         $result = '';
         try {
             $result = parent::renderString($template, $variables, $templateMode, $escapeHtml);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->sandboxErrorHandler->handleException($e);
         }
 
@@ -99,7 +83,7 @@ class SandboxView extends View
         $result = '';
         try {
             $result = parent::renderTemplate($template, $variables, $templateMode);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->sandboxErrorHandler->handleException($e);
         }
 
