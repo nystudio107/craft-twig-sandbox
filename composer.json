@@ -32,8 +32,11 @@
     "craftcms/rector": "dev-main",
     "markhuot/craft-pest-core": "^2.0.4"
   },
+<<<<<<< HEAD
   "repositories": [
   ],
+=======
+>>>>>>> 38d1f39b9e3854af3a79db9af1dffe22d9265472
   "scripts": {
     "test": "pest",
     "lint": "pest --coverage",
