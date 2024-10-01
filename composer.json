@@ -33,10 +33,6 @@
     "markhuot/craft-pest-core": "^2.0.4"
   },
   "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/bencroker/craft-pest-core"
-    }
   ],
   "scripts": {
     "test": "pest",
