@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.2 - UNRELEASED
+### Changed
+* Use the official `markhuot/craft-pest-core:^2.0.4` package instead of the patch version from @bencroker
+
 ## 5.0.1 - 2024.07.29
 ### Changed
 * Removed the special-casing for the Craft Closure, since it now uses a different loading mechanism
