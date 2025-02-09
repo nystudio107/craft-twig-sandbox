@@ -17,4 +17,5 @@ release: --code-quality --code-tests --buildchain-clean-build --docs-clean-build
 	${MAKE} -C ${PLUGINDEV_PROJECT_DIR} -- ecs check vendor/${PROJECT_PATH}/src --fix
 	${MAKE} -C ${PLUGINDEV_PROJECT_DIR} -- phpstan analyze -c vendor/${PROJECT_PATH}/phpstan.neon
 --code-tests:
+	${MAKE} -C ${PLUGINDEV_PROJECT_DIR} -- pest --configuration=vendor/nystudio107/craft-twig-sandbox/phpunit.xml --test-directory=vendor/nystudio107/craft-twig-sandbox/tests
 --docs-clean-build:
