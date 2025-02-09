@@ -36,8 +36,6 @@ Twig\Sandbox\SecurityNotAllowedFunctionError
 Function "dump" is not allowed in "__string_template__b0120324b463b0e0d2c2618b7c5ce3ba" at line 1.
 ```
 
-Additionally, if the [Craft Closure](https://github.com/nystudio107/craft-closure) package is installed, it will automatically be added to the sandbox for use in any of the Twig template rendering functions.
-
 ## Using Craft Twig Sandbox
 
 In its simplest form, you can create a Twig Sandbox like so:
