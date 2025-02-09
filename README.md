@@ -203,7 +203,7 @@ $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
 
-### Adding a SandbowView via `config/app.php`
+### Adding a SandboxView via `config/app.php`
 
 If you want to make a Twig sandbox available globally in your Craft application, you can add the following to your `config/app.php`:
 
@@ -257,9 +257,5 @@ return [
 ```
 
 ## Craft Twig Sandbox Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Initial release
 
 Brought to you by [nystudio107](https://nystudio107.com/)
