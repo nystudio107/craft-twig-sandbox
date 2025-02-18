@@ -29,7 +29,7 @@ Rather than just creating a new Twig `Environment` for the sandbox, Craft Twig S
 * You get access to the familiar `.renderObjectTemplate()`, `.renderString()`, `.renderPageTemplate()` and `.renderTemplate()` methods
 * All of the normal Craft events and scaffolding related to template rendering are present as well
 
-It also implements an `ErrorHandler` that sub-classes the Craft `ErrorHandler` which is used to handle exceptions that happen when rendering Twig templates. This allows it to properly handle and display exceptions such as:
+It also implements an `ErrorHandler` that sub-classes the Craft `ErrorHandler` which is used to handle exceptions that happen when rendering Twig templates. This allows you to optionally display exceptions such as:
 
 ```
 Twig\Sandbox\SecurityNotAllowedFunctionError
@@ -59,6 +59,41 @@ $result = $sandboxView->renderTemplate();
 If any tags, filters, functions, or object methods/properties are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
 
 **N.B.:** For performance reasons, you should create a `SandboxView` once, and use it throughout your application's lifecycle, rather than re-creating it every time you want to render Twig using it.
+
+### Exception handling
+
+Note that in the above example, exceptions will be thrown if the security policy is violated; so you can handle the exception yourself if you like:
+
+```php
+use nystudio107\crafttwigsandbox\web\SandboxView;
+use Twig\Sandbox\SecurityError;
+
+$sandboxView = new SandboxView();
+try {
+    $result = $sandboxView->renderTemplate();
+} catch (\Throwable $e) {
+     // If this is a Twig Runtime exception, use the previous one instead
+     if ($e instanceof SecurityError && ($previousException = $e->getPrevious()) !== null) {
+         $e = $previousException;
+     }
+    // Exception handling here
+}
+```
+
+Or if you want to use Craft's default web/console exception handling when rendering templates, you can do that like this:
+
+```php
+use nystudio107\crafttwigsandbox\web\SandboxView;
+
+$sandboxView = new SandboxView();
+try {
+    $result = $sandboxView->renderTemplate();
+} catch (\Throwable $e) {
+    $sandboxView->sandboxErrorHandler->handleException($e)
+}
+```
+
+...and the exception with a full stack trace will be displayed in the web browser, or in the console (depending on the type of the current request).
 
 ### BlacklistSecurityPolicy
 
