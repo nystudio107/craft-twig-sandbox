@@ -29,14 +29,12 @@ Rather than just creating a new Twig `Environment` for the sandbox, Craft Twig S
 * You get access to the familiar `.renderObjectTemplate()`, `.renderString()`, `.renderPageTemplate()` and `.renderTemplate()` methods
 * All of the normal Craft events and scaffolding related to template rendering are present as well
 
-It also implements an `ErrorHandler` that sub-classes the Craft `ErrorHandler` which is used to handle exceptions that happen when rendering Twig templates. This allows it to properly handle and display exceptions such as:
+It also implements an `ErrorHandler` that sub-classes the Craft `ErrorHandler` which is used to handle exceptions that happen when rendering Twig templates. This allows you to optionally display exceptions such as:
 
 ```
 Twig\Sandbox\SecurityNotAllowedFunctionError
 Function "dump" is not allowed in "__string_template__b0120324b463b0e0d2c2618b7c5ce3ba" at line 1.
 ```
-
-Additionally, if the [Craft Closure](https://github.com/nystudio107/craft-closure) package is installed, it will automatically be added to the sandbox for use in any of the Twig template rendering functions.
 
 ## Using Craft Twig Sandbox
 
@@ -61,6 +59,41 @@ $result = $sandboxView->renderTemplate();
 If any tags, filters, functions, or object methods/properties are used that are not allowed by the security policy, a `SecurityError` exception will be thrown.
 
 **N.B.:** For performance reasons, you should create a `SandboxView` once, and use it throughout your application's lifecycle, rather than re-creating it every time you want to render Twig using it.
+
+### Exception handling
+
+Note that in the above example, exceptions will be thrown if the security policy is violated; so you can handle the exception yourself if you like:
+
+```php
+use nystudio107\crafttwigsandbox\web\SandboxView;
+use Twig\Sandbox\SecurityError;
+
+$sandboxView = new SandboxView();
+try {
+    $result = $sandboxView->renderTemplate();
+} catch (\Throwable $e) {
+     // If this is a Twig Runtime exception, use the previous one instead
+     if ($e instanceof SecurityError && ($previousException = $e->getPrevious()) !== null) {
+         $e = $previousException;
+     }
+    // Exception handling here
+}
+```
+
+Or if you want to use Craft's default web/console exception handling when rendering templates, you can do that like this:
+
+```php
+use nystudio107\crafttwigsandbox\web\SandboxView;
+
+$sandboxView = new SandboxView();
+try {
+    $result = $sandboxView->renderTemplate();
+} catch (\Throwable $e) {
+    $sandboxView->sandboxErrorHandler->handleException($e)
+}
+```
+
+...and the exception with a full stack trace will be displayed in the web browser, or in the console (depending on the type of the current request).
 
 ### BlacklistSecurityPolicy
 
@@ -205,7 +238,7 @@ $sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 $result = $sandboxView->renderString("{{ dump() }}", []);
 ```
 
-### Adding a SandbowView via `config/app.php`
+### Adding a SandboxView via `config/app.php`
 
 If you want to make a Twig sandbox available globally in your Craft application, you can add the following to your `config/app.php`:
 
@@ -259,9 +292,5 @@ return [
 ```
 
 ## Craft Twig Sandbox Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Initial release
 
 Brought to you by [nystudio107](https://nystudio107.com/)
