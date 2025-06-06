@@ -117,7 +117,7 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
         $this->twigMethods = [];
         foreach ($methods as $class => $m) {
             $this->twigMethods[$class] = array_map(static function($value) {
-                return strtr($value, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+                return strtolower($value);
             }, is_array($m) ? $m : [$m]);
         }
     }
@@ -132,7 +132,7 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
         $this->twigProperties = [];
         foreach ($properties as $class => $p) {
             $this->twigProperties[$class] = array_map(static function($value) {
-                return strtr($value, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+                return strtolower($value);
             }, is_array($p) ? $p : [$p]);
         }
     }
