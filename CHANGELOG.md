@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 * Added `addTwigTags()`, `addTwigFilters()`, `addTwigFunctions()`, `addTwigMethods()`, and `addTwigProperties()` methods to allow for adding properties to the base config
 * Added `removeTwigTags()`, `removeTwigFilters()`, `removeTwigFunctions()`, `removeTwigMethods()`, and `removeTwigProperties()` methods to allow for adding properties to the base config
+* Add an example `config.php` file for user-customizable Twig sandbox environments
+* Add `SandboxConfig::sandboxFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
 
 ## 5.0.2 - 2025.02.17
 ### Added
