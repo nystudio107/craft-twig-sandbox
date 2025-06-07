@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## 5.0.2 -2025.02.17
+## 5.0.3 - UNRELEASED
+### Added
+* Added `addTwigTags()`, `addTwigFilters()`, `addTwigFunctions()`, `addTwigMethods()`, and `addTwigProperties()` methods to allow for adding properties to the base config
+* Added `removeTwigTags()`, `removeTwigFilters()`, `removeTwigFunctions()`, `removeTwigMethods()`, and `removeTwigProperties()` methods to allow for adding properties to the base config
+
+## 5.0.2 - 2025.02.17
 ### Added
 * Craft Twig Sandbox no longer automatically handles exceptions when rendering sandbox templates. Instead, you can decide whether to handle the exception yourself, or pass it along to the `sandboxErrorHandler` for display in the browser/console
 
