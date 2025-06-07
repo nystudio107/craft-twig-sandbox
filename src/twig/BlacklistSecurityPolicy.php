@@ -9,6 +9,7 @@ use Twig\Sandbox\SecurityNotAllowedMethodError;
 use Twig\Sandbox\SecurityNotAllowedPropertyError;
 use Twig\Sandbox\SecurityNotAllowedTagError;
 use Twig\Template;
+use function get_class;
 
 class BlacklistSecurityPolicy extends BaseSecurityPolicy
 {
@@ -22,7 +23,6 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
     {
         // Blacklisted tags
         $this->setTwigTags([
-            'apply',
             'autoescape',
             'block',
             'deprecated',
@@ -37,7 +37,6 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
             'sandbox',
             'use',
             'verbatim',
-            'with',
             'cache',
             'css',
             'dd',
@@ -57,90 +56,43 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
             'requireLogin',
             'requirePermission',
             'script',
-            'switch',
             'tag',
         ]);
         // Blacklisted filters
         $this->setTwigFilters([
-            'abs',
-            'batch',
-            'column',
             'convert_encoding',
-            'country_name',
-            'country_timezones',
-            'currency_name',
-            'currency_symbol',
             'data_uri',
-            'date_modify',
-            'default',
             'filter',
-            'format',
-            'format_currency',
-            'format_date',
-            'format_datetime',
-            'format_number',
-            'format_time',
-            'inky',
+            'inky_to_html',
             'inline_css',
-            'json_encode',
-            'language_name',
-            'locale_name',
             'map',
             'merge',
             'reduce',
-            'reverse',
-            'round',
-            'slice',
+            'sort',
             'spaceless',
-            'timezone_name',
             'url_encode',
-            'address',
             'append',
-            'ascii',
-            'atom',
             'attr',
             'base64_decode',
             'base64_encode',
-            'boolean',
             'column',
-            'diff',
-            'duration',
             'encenc',
-            'explodeClass',
-            'explodeStyle',
             'filesize',
             'filter',
-            'float',
-            'group',
             'hash',
-            'httpdate',
-            'integer',
-            'intersect',
             'json_encode',
             'json_decode',
-            'literal',
             'multisort',
             'namespace',
             'ns',
             'namespaceAttributes',
             'namespaceInputId',
             'namespaceInputName',
-            'number',
             'parseAttr',
             'parseRefs',
             'prepend',
-            'push',
             'removeClass',
-            'rss',
-            'string',
-            'truncate',
-            'unique',
-            'unshift',
-            'values',
             'where',
-            'widont',
-            'without',
-            'withoutKey',
         ]);
         // Blacklisted functions
         $this->setTwigFunctions([
@@ -175,23 +127,18 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
             'endBody',
             'expression',
             'failMessageInput',
-            'floor',
             'getenv',
             'gql',
             'head',
             'hiddenInput',
             'input',
-            'ol',
             'parseBooleanEnv',
             'parseEnv',
             'plugin',
             'redirectInput',
             'renderObjectTemplate',
-            'seq',
-            'shuffle',
             'source',
             'successMessageInput',
-            'ul',
         ]);
 
         parent::__construct($config);
@@ -242,7 +189,7 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
         }
 
         if (!$allowed) {
-            $class = \get_class($obj);
+            $class = get_class($obj);
             throw new SecurityNotAllowedMethodError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, $class), $class, $method);
         }
     }
@@ -264,7 +211,7 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
         }
 
         if (!$allowed) {
-            $class = \get_class($obj);
+            $class = get_class($obj);
             throw new SecurityNotAllowedPropertyError(sprintf('Accessing "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
         }
     }
