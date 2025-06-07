@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 * Add an example `config.php` file for user-customizable Twig sandbox environments
 * Add `SandboxConfig::sandboxFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
 
+
+### Changed
+* Cleaned up the `BlacklistSecurityPolicy` to no longer blacklist innocuous tags/filters/functions
+
 ## 4.0.2 - 2025.02.17
 ### Added
 * Craft Twig Sandbox no longer automatically handles exceptions when rendering sandbox templates. Instead, you can decide whether to handle the exception yourself, or pass it along to the `sandboxErrorHandler` for display in the browser/console
