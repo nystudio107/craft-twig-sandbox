@@ -224,6 +224,110 @@ If you want all properties or methods to be able to be accessed on a given objec
    ],
 ```
 
+### Modifying a SecurityPolicy
+
+Often, you'll want to use either the `BlacklistSecurityPolicy` or the `WhitelistSecurityPolicy`, but you might want to add or remove certain tags, filters, functions, etc. rather than wholesale replacing them.
+
+To do this, first create your security policy:
+
+```php
+$securityPolicy = new BlacklistSecurityPolicy();
+```
+
+Then you can add to the default security policy tags/filters/functions:
+```php
+$securityPolicy->addTwigTags(['guard', 'do']);
+$securityPolicy->addTwigFilters(['format_time', 'lower']);
+$securityPolicy->addTwigFunctions(['locale_names', 'script_names']);
+$securityPolicy->addTwigMethods([DbConfig::class => '*']);
+$securityPolicy->addTwigProperties([DbConfig::class => '*']);
+```
+
+...or you can remove from default security policy tags/filters/functions:
+```php
+$securityPolicy->removeTwigTags(['from', 'include']);
+$securityPolicy->removeTwigFilters(['spaceless', 'attr']);
+$securityPolicy->removeTwigFunctions(['constant', 'alias']);
+$securityPolicy->removeTwigMethods([DbConfig::class => '*']);
+$securityPolicy->removeTwigProperties([DbConfig::class => '*']);
+
+```
+
+### SecurityPolicy from a config file
+
+Often you'll want to provide a sane Twig sandbox, but also allow your users to add or remove from the policy as they see fit.
+
+To make this easy to do, there is a `SandboxConfig::sandboxFromFile()` helper method:
+```php
+    public static function sandboxFromFile(string $filePath, ?string $alias = null): BaseSecurityPolicy
+```
+
+You pass it in a `$filePath`, and it will look for a file of that name in the `craft/config/` directory. If no file is found, it will then also try to result the optional `$alias` and look for the file in that directory.
+
+If the file still is not found, it will return a default `BlacklistSecurityPolicy`.
+
+The config file format looks like this:
+```php
+<?php
+
+/**
+ * Sandbox config.php
+ *
+ * This file exists only as a template for a sandbox configuration.
+ * It does nothing on its own.
+ *
+ * Don't edit this file, instead copy it to 'craft/config' as 'xxxx-sandbox.php'
+ * and make your changes there to override default settings.
+ *
+ * The idea is that this allows for a user-editable config file so that users
+ * can customize the Twig sandbox that your application uses.
+ */
+
+use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
+
+return [
+    'securityPolicy' => BlacklistSecurityPolicy::class,
+    'twigTags' => [
+        'add' => [],
+        'remove' => [],
+    ],
+    'twigFilters' => [
+        'add' => [],
+        'remove' => [],
+    ],
+    'twigFunctions' => [
+        'add' => [],
+        'remove' => [],
+    ],
+    'twigMethods' => [
+        'add' => [],
+        'remove' => [],
+    ],
+    'twigProperties' => [
+        'add' => [],
+        'remove' => [],
+    ],
+];
+```
+
+An example file you can copy & rename exists in the `craft-twig-standbox` codebase in `src/config.php`
+
+So for a practical example, the author of the SEOmatic plugin would copy the `config.php` file to that plugin's `src/` directory as `seomatic-sandbox.php`, and put in any customizations that they might want there.
+
+Then they could direct their users to copy the `seomatic-sandbox.php` file to their `craft/config/` directory if they wanted to make any customizations to it.
+
+Then to create the sandbox, they would do:
+
+```php
+use nystudio107\crafttwigsandbox\helpers\SandboxConfig;
+
+$sandbox = SandboxConfig::sandboxFromFile('seomatic-sandbox', '@nystudio107/seomatic');
+```
+
+This will cause it to create the sandbox from the `seomatic-sandbox.php` file in the `craft/config/` directory (if it exists), and if it does not exist, it will load the config file from the `seomatic-sandbox.php` in the `@nystudio107/seomatic` directory (which points to the plugin's source).
+
+Craft automatically creates a namespaced alias for each plugin.
+
 ### Custom SecurityPolicy
 
 You can also create your own custom `SecurityPolicy` to use, it just needs to conform to the Twig [`SecurityPolicyInterface`](https://github.com/twigphp/Twig/blob/3.x/src/Sandbox/SecurityPolicyInterface.php):
