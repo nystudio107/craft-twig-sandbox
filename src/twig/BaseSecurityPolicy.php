@@ -6,11 +6,11 @@ use craft\base\Model;
 use Twig\Sandbox\SecurityPolicyInterface;
 
 /**
- * @property array|string[] $twigTags  Tags for the Twig sandbox Security Policy
- * @property array|string[] $twigFilters  Filters for the Twig sandbox Security Policy
- * @property array|string[] $twigFunctions  Functions for the Twig sandbox Security Policy
- * @property array|string[] $twigMethods  Object methods for the Twig sandbox Security Policy
- * @property array|string[] $twigProperties  Object properties for the Twig sandbox Security Policy
+ * @property string[] $twigTags  Tags for the Twig sandbox Security Policy
+ * @property string[] $twigFilters  Filters for the Twig sandbox Security Policy
+ * @property string[] $twigFunctions  Functions for the Twig sandbox Security Policy
+ * @property array[] $twigMethods  Object methods for the Twig sandbox Security Policy
+ * @property array[] $twigProperties  Object properties for the Twig sandbox Security Policy
  */
 abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterface
 {
@@ -18,31 +18,31 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
     // =========================================================================
 
     /**
-     * @var array|string[] Tags for the Twig sandbox Security Policy
+     * @var string[] Tags for the Twig sandbox Security Policy
      */
     private array $twigTags = [
     ];
 
     /**
-     * @var array|string[] Filters for the Twig sandbox Security Policy
+     * @var string[] Filters for the Twig sandbox Security Policy
      */
     private array $twigFilters = [
     ];
 
     /**
-     * @var array|string[] Functions for the Twig sandbox Security Policy
+     * @var string[] Functions for the Twig sandbox Security Policy
      */
     private array $twigFunctions = [
     ];
 
     /**
-     * @var array|string[] Object methods for the Twig sandbox Security Policy
+     * @var array[] Object methods for the Twig sandbox Security Policy
      */
     private array $twigMethods = [
     ];
 
     /**
-     * @var array|string[] Object properties for the Twig sandbox Security Policy
+     * @var array[] Object properties for the Twig sandbox Security Policy
      */
     private array $twigProperties = [
     ];
@@ -87,6 +87,16 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
         $this->twigTags = $tags;
     }
 
+    public function addTwigTags(array $tags): void
+    {
+        $this->twigTags = array_unique(array_merge($this->twigTags, $tags));
+    }
+
+    public function removeTwigTags(array $tags): void
+    {
+        $this->twigTags = array_diff($this->twigTags, $tags);
+    }
+
     public function getTwigFilters(): array
     {
         return $this->twigFilters;
@@ -97,6 +107,16 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
         $this->twigFilters = $filters;
     }
 
+    public function addTwigFilters(array $filters): void
+    {
+        $this->twigFilters = array_unique(array_merge($this->twigFilters, $filters));
+    }
+
+    public function removeTwigFilters(array $filters): void
+    {
+        $this->twigFilters = array_diff($this->twigFilters, $filters);
+    }
+
     public function getTwigFunctions(): array
     {
         return $this->twigFunctions;
@@ -105,6 +125,16 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
     public function setTwigFunctions(array $functions): void
     {
         $this->twigFunctions = $functions;
+    }
+
+    public function addTwigFunctions(array $functions): void
+    {
+        $this->twigFunctions = array_unique(array_merge($this->twigFunctions, $functions));
+    }
+
+    public function removeTwigFunctions(array $functions): void
+    {
+        $this->twigFunctions = array_diff($this->twigFunctions, $functions);
     }
 
     public function getTwigMethods(): array
@@ -122,6 +152,24 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
         }
     }
 
+    public function addTwigMethods(array $methods): void
+    {
+        foreach ($methods as $class => $m) {
+            $this->twigMethods[$class] = array_unique(array_merge($this->twigMethods[$class], array_map(static function($value) {
+                return strtolower($value);
+            }, is_array($m) ? $m : [$m])));
+        }
+    }
+
+    public function removeTwigMethods(array $methods): void
+    {
+        foreach ($methods as $class => $m) {
+            $this->twigMethods[$class] = array_diff($this->twigMethods[$class], array_map(static function($value) {
+                return strtolower($value);
+            }, is_array($m) ? $m : [$m]));
+        }
+    }
+
     public function getTwigProperties(): array
     {
         return $this->twigProperties;
@@ -134,6 +182,24 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
             $this->twigProperties[$class] = array_map(static function($value) {
                 return strtolower($value);
             }, is_array($p) ? $p : [$p]);
+        }
+    }
+
+    public function addTwigProperties(array $properties): void
+    {
+        foreach ($properties as $class => $p) {
+            $this->twigProperties[$class] = array_unique(array_merge($this->twigProperties[$class], array_map(static function($value) {
+                return strtolower($value);
+            }, is_array($p) ? $p : [$p])));
+        }
+    }
+
+    public function removeTwigProperties(array $properties): void
+    {
+        foreach ($properties as $class => $p) {
+            $this->twigProperties[$class] = array_diff($this->twigProperties[$class], array_map(static function($value) {
+                return strtolower($value);
+            }, is_array($p) ? $p : [$p]));
         }
     }
 }
