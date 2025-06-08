@@ -2,13 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## 4.0.3 - UNRELEASED
+## 4.0.3 - 2025.06.08
 ### Added
 * Add an example `config/blacklist-sandbox.php` and `config/whitelist-sandbox.php` files for user-customizable Twig sandbox environments
-* Add `SandboxConfig::sandboxFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
-* Add an example `config.php` file for user-customizable Twig sandbox environments
-* Add `SandboxConfig::sandboxFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
-
+* Add `SecurityPolicy::createFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
 
 ### Changed
 * Cleaned up the `BlacklistSecurityPolicy` to no longer blacklist innocuous tags/filters/functions
