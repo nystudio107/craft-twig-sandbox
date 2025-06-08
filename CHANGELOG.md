@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 4.0.3 - UNRELEASED
 ### Added
-* Added `addTwigTags()`, `addTwigFilters()`, `addTwigFunctions()`, `addTwigMethods()`, and `addTwigProperties()` methods to allow for adding properties to the base config
-* Added `removeTwigTags()`, `removeTwigFilters()`, `removeTwigFunctions()`, `removeTwigMethods()`, and `removeTwigProperties()` methods to allow for adding properties to the base config
+* Add an example `config/blacklist-sandbox.php` and `config/whitelist-sandbox.php` files for user-customizable Twig sandbox environments
+* Add `SandboxConfig::sandboxFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
 * Add an example `config.php` file for user-customizable Twig sandbox environments
 * Add `SandboxConfig::sandboxFromFile()` to create a new Twig sandbox from a config file in the `config/` directory
 
