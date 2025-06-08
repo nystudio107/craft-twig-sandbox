@@ -2,7 +2,7 @@
 
 namespace nystudio107\crafttwigsandbox\twig;
 
-use nystudio107\crafttwigsandbox\helpers\Sandbox;
+use nystudio107\crafttwigsandbox\helpers\SecurityPolicy;
 use Twig\Markup;
 use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
@@ -22,7 +22,7 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
     public function __construct($config = [])
     {
         if (empty($config)) {
-            $config = Sandbox::getConfigFromFile('blacklist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
+            $config = SecurityPolicy::getConfigFromFile('blacklist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
             unset($config['class']);
         }
         parent::__construct($config);

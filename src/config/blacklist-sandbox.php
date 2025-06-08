@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Sandbox config.php
+ * SecurityPolicy config.php
  *
  * This file exists only as a template for a sandbox configuration.
  * It does nothing on its own.
