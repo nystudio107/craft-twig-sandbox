@@ -6,68 +6,19 @@ use Craft;
 use craft\helpers\ArrayHelper;
 use craft\helpers\StringHelper;
 use nystudio107\crafttwigsandbox\twig\BaseSecurityPolicy;
-use nystudio107\crafttwigsandbox\twig\BlacklistSecurityPolicy;
 use nystudio107\seomatic\Seomatic;
 use function is_array;
 
-class SandboxConfig
+class Sandbox
 {
     // Static Methods
     // =========================================================================
 
-    public static function sandboxFromFile(string $filePath, ?string $alias = null): BaseSecurityPolicy
+    public static function createFromFile(string $filePath, ?string $alias = null): BaseSecurityPolicy
     {
         $config = self::getConfigFromFile($filePath, $alias);
 
-        $policyClass = $config['securityPolicy'] ?? BlacklistSecurityPolicy::class;
-        $policy = new $policyClass();
-        // twigTags
-        if (isset($config['twigTags'])) {
-            if (isset($config['twigTags']['add'])) {
-                $policy->addTwigTags($config['twigTags']['add']);
-            }
-            if (isset($config['twigTags']['remove'])) {
-                $policy->removeTwigTags($config['twigTags']['remove']);
-            }
-        }
-        // twigFilters
-        if (isset($config['twigFilters'])) {
-            if (isset($config['twigFilters']['add'])) {
-                $policy->addTwigFilters($config['twigFilters']['add']);
-            }
-            if (isset($config['twigFilters']['remove'])) {
-                $policy->removeTwigFilters($config['twigFilters']['remove']);
-            }
-        }
-        // twigFunctions
-        if (isset($config['twigFunctions'])) {
-            if (isset($config['twigFunctions']['add'])) {
-                $policy->addTwigFunctions($config['twigFunctions']['add']);
-            }
-            if (isset($config['twigFunctions']['remove'])) {
-                $policy->removeTwigFunctions($config['twigFunctions']['remove']);
-            }
-        }
-        // twigMethods
-        if (isset($config['twigMethods'])) {
-            if (isset($config['twigMethods']['add'])) {
-                $policy->addTwigMethods($config['twigMethods']['add']);
-            }
-            if (isset($config['twigMethods']['remove'])) {
-                $policy->removeTwigMethods($config['twigMethods']['remove']);
-            }
-        }
-        // twigProperties
-        if (isset($config['twigProperties'])) {
-            if (isset($config['twigProperties']['add'])) {
-                $policy->addTwigProperties($config['twigProperties']['add']);
-            }
-            if (isset($config['twigProperties']['remove'])) {
-                $policy->removeTwigProperties($config['twigProperties']['remove']);
-            }
-        }
-
-        return $policy;
+        return Craft::createObject($config);
     }
 
     /**

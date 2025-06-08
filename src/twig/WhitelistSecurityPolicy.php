@@ -2,6 +2,7 @@
 
 namespace nystudio107\crafttwigsandbox\twig;
 
+use nystudio107\crafttwigsandbox\helpers\Sandbox;
 use Twig\Markup;
 use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
@@ -20,70 +21,10 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
      */
     public function __construct($config = [])
     {
-        // Whitelisted tags
-        $this->setTwigTags([
-            'for',
-            'if',
-            'set',
-        ]);
-        // Whitelisted filters
-        $this->setTwigFilters([
-            'capitalize',
-            'date',
-            'escape',
-            'first',
-            'join',
-            'keys',
-            'last',
-            'length',
-            'lower',
-            'markdown',
-            'nl2br',
-            'number_format',
-            'raw',
-            'replace',
-            'sort',
-            'split',
-            'striptags',
-            'title',
-            'trim',
-            'upper',
-            'camel',
-            'contains',
-            'currency',
-            'date',
-            'datetime',
-            'id',
-            'index',
-            'indexOf',
-            'kebab',
-            'lcfirst',
-            'length',
-            'markdown',
-            'md',
-            'merge',
-            'money',
-            'pascal',
-            'percentage',
-            'purify',
-            'snake',
-            'time',
-            'timestamp',
-            'translate',
-            't',
-            'ucfirst',
-            'ucwords',
-        ]);
-        // Whitelisted functions
-        $this->setTwigFunctions([
-            'date',
-            'max',
-            'min',
-            'random',
-            'range',
-            'collect',
-        ]);
-
+        if (empty($config)) {
+            $config = Sandbox::getConfigFromFile('whitelist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
+            unset($config['class']);
+        }
         parent::__construct($config);
     }
 

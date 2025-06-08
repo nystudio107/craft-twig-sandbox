@@ -73,6 +73,7 @@ test('Non whitelisted function is not allowed', function() {
 test('Whitelisted object method is allowed', function() {
     $sandboxView = new SandboxView([
         'securityPolicy' => new WhitelistSecurityPolicy([
+            'twigTags' => ['set'],
             'twigMethods' => [
                 Application::class => ['getConfig'],
                 Config::class => ['getGeneral'],
@@ -89,6 +90,7 @@ test('Whitelisted object method is allowed', function() {
 test('Whitelisted wildcard object method is allowed', function() {
     $sandboxView = new SandboxView([
         'securityPolicy' => new WhitelistSecurityPolicy([
+            'twigTags' => ['set'],
             'twigMethods' => [
                 Application::class => '*',
                 Config::class => '*',
