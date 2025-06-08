@@ -9,7 +9,7 @@ use nystudio107\crafttwigsandbox\twig\BaseSecurityPolicy;
 use nystudio107\seomatic\Seomatic;
 use function is_array;
 
-class Sandbox
+class SecurityPolicy
 {
     // Static Methods
     // =========================================================================

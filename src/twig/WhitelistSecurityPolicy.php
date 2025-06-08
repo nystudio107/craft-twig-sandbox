@@ -2,7 +2,7 @@
 
 namespace nystudio107\crafttwigsandbox\twig;
 
-use nystudio107\crafttwigsandbox\helpers\Sandbox;
+use nystudio107\crafttwigsandbox\helpers\SecurityPolicy;
 use Twig\Markup;
 use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
@@ -10,6 +10,7 @@ use Twig\Sandbox\SecurityNotAllowedMethodError;
 use Twig\Sandbox\SecurityNotAllowedPropertyError;
 use Twig\Sandbox\SecurityNotAllowedTagError;
 use Twig\Template;
+use function get_class;
 
 class WhitelistSecurityPolicy extends BaseSecurityPolicy
 {
@@ -22,7 +23,7 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
     public function __construct($config = [])
     {
         if (empty($config)) {
-            $config = Sandbox::getConfigFromFile('whitelist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
+            $config = SecurityPolicy::getConfigFromFile('whitelist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
             unset($config['class']);
         }
         parent::__construct($config);
@@ -73,7 +74,7 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
         }
 
         if (!$allowed) {
-            $class = \get_class($obj);
+            $class = get_class($obj);
             throw new SecurityNotAllowedMethodError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, $class), $class, $method);
         }
     }
@@ -95,7 +96,7 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
         }
 
         if (!$allowed) {
-            $class = \get_class($obj);
+            $class = get_class($obj);
             throw new SecurityNotAllowedPropertyError(sprintf('Accessing "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
         }
     }

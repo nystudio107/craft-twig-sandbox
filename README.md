@@ -228,7 +228,7 @@ If you want all properties or methods to be able to be accessed on a given objec
 
 Often you'll want to provide a sane Twig sandbox, but also allow your users to add or remove from the policy as they see fit.
 
-To make this easy to do, there is a `Sandbox::createFromFile()` helper method:
+To make this easy to do, there is a `Sandbox::createFromFile()` helper method to create a sandbox security policy from a config file:
 ```php
     public static function createFromFile(string $filePath, ?string $alias = null): BaseSecurityPolicy
 ```
@@ -247,12 +247,13 @@ So for a practical example, the author of the SEOmatic plugin would copy the `co
 
 Then they could direct their users to copy the `seomatic-sandbox.php` file to their `craft/config/` directory if they wanted to make any customizations to it.
 
-Then to create the sandbox, they would do:
+Then to create the sandbox view in the plugin, they would do:
 
 ```php
-use nystudio107\crafttwigsandbox\helpers\Sandbox;
+use nystudio107\crafttwigsandbox\helpers\SecurityPolicy;
 
-$sandbox = Sandbox::createFromFile('seomatic-sandbox', '@nystudio107/seomatic');
+$securityPolicy = SecurityPolicy::createFromFile('seomatic-sandbox', '@nystudio107/seomatic');
+$sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
 ```
 
 This will cause it to create the sandbox from the `seomatic-sandbox.php` file in the `craft/config/` directory (if it exists), and if it does not exist, it will load the config file from the `seomatic-sandbox.php` in the `@nystudio107/seomatic` directory (which points to the plugin's source).
