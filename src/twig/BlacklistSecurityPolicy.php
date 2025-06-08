@@ -2,6 +2,7 @@
 
 namespace nystudio107\crafttwigsandbox\twig;
 
+use nystudio107\crafttwigsandbox\helpers\Sandbox;
 use Twig\Markup;
 use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
@@ -20,126 +21,10 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
      */
     public function __construct($config = [])
     {
-        // Blacklisted tags
-        $this->setTwigTags([
-            'autoescape',
-            'block',
-            'deprecated',
-            'do',
-            'embed',
-            'extends',
-            'flush',
-            'from',
-            'import',
-            'include',
-            'macro',
-            'sandbox',
-            'use',
-            'verbatim',
-            'cache',
-            'css',
-            'dd',
-            'dump',
-            'exit',
-            'header',
-            'hook',
-            'html',
-            'js',
-            'namespace',
-            'nav',
-            'paginate',
-            'redirect',
-            'requireAdmin',
-            'requireEdition',
-            'requireGuest',
-            'requireLogin',
-            'requirePermission',
-            'script',
-            'tag',
-        ]);
-        // Blacklisted filters
-        $this->setTwigFilters([
-            'convert_encoding',
-            'data_uri',
-            'filter',
-            'inky_to_html',
-            'inline_css',
-            'map',
-            'merge',
-            'reduce',
-            'sort',
-            'spaceless',
-            'url_encode',
-            'append',
-            'attr',
-            'base64_decode',
-            'base64_encode',
-            'column',
-            'encenc',
-            'filesize',
-            'filter',
-            'hash',
-            'json_encode',
-            'json_decode',
-            'multisort',
-            'namespace',
-            'ns',
-            'namespaceAttributes',
-            'namespaceInputId',
-            'namespaceInputName',
-            'parseAttr',
-            'parseRefs',
-            'prepend',
-            'removeClass',
-            'where',
-        ]);
-        // Blacklisted functions
-        $this->setTwigFunctions([
-            'attribute',
-            'block',
-            'constant',
-            'cycle',
-            'dump',
-            'html_classes',
-            'parent',
-            'source',
-            'template_from_string',
-            'actionInput',
-            'alias',
-            'beginBody',
-            'block',
-            'canCreateDrafts',
-            'canDelete',
-            'canDeleteForSite',
-            'canDuplicate',
-            'canSave',
-            'canView',
-            'ceil',
-            'className',
-            'clone',
-            'combine',
-            'configure',
-            'constant',
-            'create',
-            'csrfInput',
-            'dump',
-            'endBody',
-            'expression',
-            'failMessageInput',
-            'getenv',
-            'gql',
-            'head',
-            'hiddenInput',
-            'input',
-            'parseBooleanEnv',
-            'parseEnv',
-            'plugin',
-            'redirectInput',
-            'renderObjectTemplate',
-            'source',
-            'successMessageInput',
-        ]);
-
+        if (empty($config)) {
+            $config = Sandbox::getConfigFromFile('blacklist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
+            unset($config['class']);
+        }
         parent::__construct($config);
     }
 
