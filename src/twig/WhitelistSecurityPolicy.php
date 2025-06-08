@@ -2,6 +2,7 @@
 
 namespace nystudio107\crafttwigsandbox\twig;
 
+use nystudio107\crafttwigsandbox\helpers\SecurityPolicy;
 use Twig\Markup;
 use Twig\Sandbox\SecurityNotAllowedFilterError;
 use Twig\Sandbox\SecurityNotAllowedFunctionError;
@@ -9,6 +10,7 @@ use Twig\Sandbox\SecurityNotAllowedMethodError;
 use Twig\Sandbox\SecurityNotAllowedPropertyError;
 use Twig\Sandbox\SecurityNotAllowedTagError;
 use Twig\Template;
+use function get_class;
 
 class WhitelistSecurityPolicy extends BaseSecurityPolicy
 {
@@ -20,70 +22,10 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
      */
     public function __construct($config = [])
     {
-        // Whitelisted tags
-        $this->setTwigTags([
-            'for',
-            'if',
-            'set',
-        ]);
-        // Whitelisted filters
-        $this->setTwigFilters([
-            'capitalize',
-            'date',
-            'escape',
-            'first',
-            'join',
-            'keys',
-            'last',
-            'length',
-            'lower',
-            'markdown',
-            'nl2br',
-            'number_format',
-            'raw',
-            'replace',
-            'sort',
-            'split',
-            'striptags',
-            'title',
-            'trim',
-            'upper',
-            'camel',
-            'contains',
-            'currency',
-            'date',
-            'datetime',
-            'id',
-            'index',
-            'indexOf',
-            'kebab',
-            'lcfirst',
-            'length',
-            'markdown',
-            'md',
-            'merge',
-            'money',
-            'pascal',
-            'percentage',
-            'purify',
-            'snake',
-            'time',
-            'timestamp',
-            'translate',
-            't',
-            'ucfirst',
-            'ucwords',
-        ]);
-        // Whitelisted functions
-        $this->setTwigFunctions([
-            'date',
-            'max',
-            'min',
-            'random',
-            'range',
-            'collect',
-        ]);
-
+        if (empty($config)) {
+            $config = SecurityPolicy::getConfigFromFile('whitelist-sandbox', '@vendor/nystudio107/craft-twig-sandbox/src/config');
+            unset($config['class']);
+        }
         parent::__construct($config);
     }
 
@@ -132,7 +74,7 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
         }
 
         if (!$allowed) {
-            $class = \get_class($obj);
+            $class = get_class($obj);
             throw new SecurityNotAllowedMethodError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, $class), $class, $method);
         }
     }
@@ -154,7 +96,7 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
         }
 
         if (!$allowed) {
-            $class = \get_class($obj);
+            $class = get_class($obj);
             throw new SecurityNotAllowedPropertyError(sprintf('Accessing "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
         }
     }

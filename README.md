@@ -224,6 +224,42 @@ If you want all properties or methods to be able to be accessed on a given objec
    ],
 ```
 
+### SecurityPolicy from a config file
+
+Often you'll want to provide a sane Twig sandbox, but also allow your users to add or remove from the policy as they see fit.
+
+To make this easy to do, there is a `SecurityPolicy::createFromFile()` helper method to create a sandbox security policy from a config file:
+```php
+    public static function createFromFile(string $filePath, ?string $alias = null): BaseSecurityPolicy
+```
+
+You pass it in a `$filePath`, and it will look for a file of that name (with `.php` added to the end of it) in the `craft/config/` directory. If no file is found, it will then also try to resolve the optional `$alias` and look for the file in that directory.
+
+If the file still is not found, it will return a default `BlacklistSecurityPolicy`.
+
+The config file is a standard [Yii2 Object Configuration file](https://www.yiiframework.com/doc/guide/2.0/en/concept-configurations).
+
+Example files you can copy & rename exists in the `craft-twig-standbox` codebase in `src/config/`, as `blacklist-sandbox.php` and `whitelist-sandbox-php`.
+
+These are the default files that are used to create the respective security policies when you allocate a new `BlacklistSecurityPolicy` or `WhitelistSecurityPolicy`, and pass in no object configuration.
+
+So for a practical example, the author of the SEOmatic plugin would copy the `config/blacklist-sandbox.php` file to that plugin's `src/` directory as `seomatic-sandbox.php`, and put in any customizations that they might want there.
+
+Then they could direct their users to copy the `seomatic-sandbox.php` file to their `craft/config/` directory if they wanted to make any customizations to it.
+
+Then to create the sandbox view in the plugin, they would do:
+
+```php
+use nystudio107\crafttwigsandbox\helpers\SecurityPolicy;
+
+$securityPolicy = SecurityPolicy::createFromFile('seomatic-sandbox', '@nystudio107/seomatic');
+$sandboxView = new SandboxView(['securityPolicy' => $securityPolicy]);
+```
+
+This will cause it to create the sandbox from the `seomatic-sandbox.php` file in the `craft/config/` directory (if it exists), and if it does not exist, it will load the config file from the `seomatic-sandbox.php` in the `@nystudio107/seomatic` directory (which points to the plugin's source).
+
+Craft automatically creates a namespaced alias for each plugin.
+
 ### Custom SecurityPolicy
 
 You can also create your own custom `SecurityPolicy` to use, it just needs to conform to the Twig [`SecurityPolicyInterface`](https://github.com/twigphp/Twig/blob/3.x/src/Sandbox/SecurityPolicyInterface.php):
