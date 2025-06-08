@@ -228,7 +228,7 @@ If you want all properties or methods to be able to be accessed on a given objec
 
 Often you'll want to provide a sane Twig sandbox, but also allow your users to add or remove from the policy as they see fit.
 
-To make this easy to do, there is a `Sandbox::createFromFile()` helper method to create a sandbox security policy from a config file:
+To make this easy to do, there is a `SecurityPolicy::createFromFile()` helper method to create a sandbox security policy from a config file:
 ```php
     public static function createFromFile(string $filePath, ?string $alias = null): BaseSecurityPolicy
 ```
