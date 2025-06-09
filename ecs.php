@@ -9,5 +9,5 @@ return static function(ECSConfig $ecsConfig): void {
         __FILE__,
     ]);
     $ecsConfig->parallel();
-    $ecsConfig->sets([SetList::CRAFT_CMS_4]);
+    $ecsConfig->sets([SetList::CRAFT_CMS_3]);
 };

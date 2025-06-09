@@ -20,31 +20,31 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
     /**
      * @var string[] Tags for the Twig sandbox Security Policy
      */
-    private array $twigTags = [
+    private $twigTags = [
     ];
 
     /**
      * @var string[] Filters for the Twig sandbox Security Policy
      */
-    private array $twigFilters = [
+    private $twigFilters = [
     ];
 
     /**
      * @var string[] Functions for the Twig sandbox Security Policy
      */
-    private array $twigFunctions = [
+    private $twigFunctions = [
     ];
 
     /**
      * @var array[] Object methods for the Twig sandbox Security Policy
      */
-    private array $twigMethods = [
+    private $twigMethods = [
     ];
 
     /**
      * @var array[] Object properties for the Twig sandbox Security Policy
      */
-    private array $twigProperties = [
+    private $twigProperties = [
     ];
 
     // Public Methods
