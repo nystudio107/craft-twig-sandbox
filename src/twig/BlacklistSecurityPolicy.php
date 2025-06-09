@@ -61,7 +61,7 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
             return;
         }
 
-        $method = strtr($method, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+        $method = strtolower($method);
         $allowed = true;
         foreach ($this->getTwigMethods() as $class => $methods) {
             if ($obj instanceof $class) {
@@ -84,7 +84,7 @@ class BlacklistSecurityPolicy extends BaseSecurityPolicy
     public function checkPropertyAllowed($obj, $property): void
     {
         $allowed = true;
-        $property = strtr($property, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+        $property = strtolower($property);
         foreach ($this->getTwigProperties() as $class => $properties) {
             if ($obj instanceof $class) {
                 if ($properties[0] === '*' || in_array($property, $properties, true)) {
