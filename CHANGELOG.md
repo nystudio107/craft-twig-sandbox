@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.0.4 - 2025.06.10
+### Fixed
+* Remove errant dependency on SEOmatic in the `SecurityPolicy` helper class
+
 ## 4.0.3 - 2025.06.08
 ### Added
 * Add an example `config/blacklist-sandbox.php` and `config/whitelist-sandbox.php` files for user-customizable Twig sandbox environments
