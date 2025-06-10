@@ -4,9 +4,7 @@ namespace nystudio107\crafttwigsandbox\helpers;
 
 use Craft;
 use craft\helpers\ArrayHelper;
-use craft\helpers\StringHelper;
 use nystudio107\crafttwigsandbox\twig\BaseSecurityPolicy;
-use nystudio107\seomatic\Seomatic;
 use function is_array;
 
 class SecurityPolicy
@@ -57,7 +55,7 @@ class SecurityPolicy
         $mergedConfig = [];
         /** @var array $config */
         foreach ($config as $env => $envConfig) {
-            if ($env === '*' || StringHelper::contains(Seomatic::$environment, $env)) {
+            if ($env === '*') {
                 $mergedConfig = ArrayHelper::merge($mergedConfig, $envConfig);
             }
         }
