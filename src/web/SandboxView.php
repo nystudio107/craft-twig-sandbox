@@ -18,12 +18,12 @@ class SandboxView extends View
     /**
      * @var SecurityPolicyInterface|null The security policy to use for the SandboxView
      */
-    public ?SecurityPolicyInterface $securityPolicy = null;
+    public $securityPolicy = null;
 
     /**
      * @var WebSandboxErrorHandler|ConsoleSandboxErrorHandler|null The error handler to use for the SandboxView
      */
-    public WebSandboxErrorHandler|ConsoleSandboxErrorHandler|null $sandboxErrorHandler = null;
+    public $sandboxErrorHandler = null;
 
     // Public Methods
     // =========================================================================
