@@ -25,6 +25,11 @@ class SandboxView extends View
      */
     public WebSandboxErrorHandler|ConsoleSandboxErrorHandler|null $sandboxErrorHandler = null;
 
+    /**
+     * @var class-string[] Array of TwigExtension classes to instantiate and add to the SandboxView
+     */
+    public array $twigExtensionClasses = [];
+
     // Public Methods
     // =========================================================================
 
@@ -39,5 +44,11 @@ class SandboxView extends View
         $this->securityPolicy = $this->securityPolicy ?? new BlacklistSecurityPolicy();
         // Add the SandboxExtension with our SecurityPolicy lazily via ::registerTwigExtension()
         $this->registerTwigExtension(new SandboxExtension($this->securityPolicy, true));
+        // Register the additional TwigExtension classes
+        foreach ($this->twigExtensionClasses as $className) {
+            if (class_exists($className)) {
+                $this->registerTwigExtension(new $className());
+            }
+        }
     }
 }
