@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 5.0.5 - UNRELEASED
+## 5.0.5 - 2028.08.18
 ### Added
 * Provide a mechanism for adding Twig Extensions in bulk to the `SandboxView` ([#1632](https://github.com/nystudio107/craft-seomatic/issues/1632))
 
