@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.5 - UNRELEASED
+### Added
+* Provide a mechanism for adding Twig Extensions in bulk to the `SandboxView` ([#1632](https://github.com/nystudio107/craft-seomatic/issues/1632))
+
 ## 5.0.4 - 2025.06.10
 ### Fixed
 * Remove errant dependency on SEOmatic in the `SecurityPolicy` helper class
