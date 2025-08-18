@@ -260,6 +260,28 @@ This will cause it to create the sandbox from the `seomatic-sandbox.php` file in
 
 Craft automatically creates a namespaced alias for each plugin.
 
+### Adding TwigExtensions
+
+By default, the Twig `SandboxView` will only have the Twig extensions in it that Craft itself registers. Any Twig extensions that are added by plugins or modules will not be present.
+
+This is because there is no "Register Twig Extensions" event sent by Craft that plugins are modules can listen for, so the `SandboxView` has no way to tell each plugin or module to register their Twig extensions in the Twig `SandboxView`.
+
+Instead, if you have Twig extensions that you want added to your Twig `SandboxView`, you can either do it manually:
+
+```php
+$sandboxView = new SandboxView();
+$sandboxView->registerTwigExtension(new MyTwigExtension());
+```
+
+...or you can pass in an array of class names to the constructor, and have the Twig `SandboxView` instantiate the Twig extensions for you:
+
+```php
+$sandboxView = new SandboxView(['twigExtensionClasses' => [
+    MyTwigExtension::class,
+    AnotherTwigExtension::class,
+]]);
+```
+
 ### Custom SecurityPolicy
 
 You can also create your own custom `SecurityPolicy` to use, it just needs to conform to the Twig [`SecurityPolicyInterface`](https://github.com/twigphp/Twig/blob/3.x/src/Sandbox/SecurityPolicyInterface.php):

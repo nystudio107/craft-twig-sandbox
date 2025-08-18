@@ -1,7 +1,7 @@
 {
   "name": "nystudio107/craft-twig-sandbox",
   "description": "Allows you to easily create a sandboxed Twig environment where you can control what tags, filters, functions, and object methods/properties are allowed",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "keywords": [
     "craft",
     "cms",
