@@ -53,7 +53,7 @@ abstract class BaseSecurityPolicy extends Model implements SecurityPolicyInterfa
     /**
      * @inheritDoc
      */
-    public function checkSecurity($tags, $filters, $functions): void
+    public function checkSecurity($tags, $filters, $functions, array $tests = []): void
     {
         // Allow all tags, filters, and functions
     }

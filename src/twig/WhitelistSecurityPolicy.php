@@ -31,7 +31,7 @@ class WhitelistSecurityPolicy extends BaseSecurityPolicy
     /**
      * @inheritDoc
      */
-    public function checkSecurity($tags, $filters, $functions): void
+    public function checkSecurity($tags, $filters, $functions, array $tests = []): void
     {
         foreach ($tags as $tag) {
             if (!in_array($tag, $this->getTwigTags(), true)) {
