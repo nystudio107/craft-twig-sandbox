@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## 5.0.5 - 2028.08.18
+## 5.0.6 - 2026.09.25
+### Fixed
+* Adjust the method signature for `checkSecurity()` to be compatible with later versions of Twig ([#2](https://github.com/nystudio107/craft-twig-sandbox/issues/2))
+
+## 5.0.5 - 2025.08.18
 ### Added
 * Provide a mechanism for adding Twig Extensions in bulk to the `SandboxView` ([#1632](https://github.com/nystudio107/craft-seomatic/issues/1632))
 
